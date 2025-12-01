@@ -1,0 +1,34 @@
+<?php
+    include '../../app.php';
+
+    if(isset($_POST['tombol'])){
+       
+        $link = escapestring($_POST['link']);
+        $iconOld = $_FILES['icon']['tmp_name'];
+        $iconNew =  time() . ".png";
+        
+        $storages = "../../../storages/socmeds/";
+
+        if(move_uploaded_file($iconOld, $storages . $iconNew)){
+             $qInsert ="INSERT INTO socmeds (link, icon)
+             VALUES ('$link', '$iconNew')";
+              
+
+            mysqli_query($connect, $qInsert) or die(mysqli_eror($connect));
+            echo "
+                <script>
+                     alert('Data Berhasil Ditambah');
+                     window.location.href='../../pages/socmeds/index.php';
+                </script>
+            ";
+        }else{
+             echo "
+                <script>
+                     alert('Data Gagal Ditambah');
+                     window.location.href='../../pages/socmeds/create.php';
+                </script>
+            ";
+        }
+    }
+
+?>
